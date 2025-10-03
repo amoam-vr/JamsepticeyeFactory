@@ -13,6 +13,8 @@ public class Toy : DynamicObject
     public bool startingToy;
     protected bool isDead;
 
+    protected bool canPush;
+
     //Control Variables
     protected int moveDir;
 
@@ -57,6 +59,11 @@ public class Toy : DynamicObject
         }
 
         aliveToys.Remove(possessedToy);
+
+        if (possessedToy == toyScript)
+        {
+            canPush = true;
+        }
     }
 
     protected virtual void Update()
@@ -79,7 +86,7 @@ public class Toy : DynamicObject
         }
         else
         {
-            base.FixedUpdate();
+            Unpossessed();
         }
     }
 
@@ -104,11 +111,18 @@ public class Toy : DynamicObject
         isGrounded = false;
     }
 
+    protected virtual void Unpossessed()
+    {
+        base.FixedUpdate();
+    }
+
     public virtual void Die()
     {
         if (isDead) return;
 
         isDead = true;
+
+        canPush = false;
 
         aliveToys.Remove(this);
 
@@ -144,6 +158,8 @@ public class Toy : DynamicObject
     {
         //Stop player from accelerationg when hitting a ground or wall
 
+        base.OnCollisionStay2D(collision);
+
         DynamicObject pushableObj = collision.gameObject.GetComponent<DynamicObject>();
 
         for (int i = 0; i < collision.contactCount; i++)
@@ -152,9 +168,9 @@ public class Toy : DynamicObject
 
             if (contactNormal.x >= 0.9)
             {
-                if (pushableObj == null || !pushableObj.pushable)
+                if (!canPush || pushableObj == null || !pushableObj.pushable)
                 {
-                    vel.x = Mathf.Max(vel.x, 0);
+                    vel.x = Mathf.Min(vel.x, 0);
                 }
                 else
                 {
@@ -164,7 +180,7 @@ public class Toy : DynamicObject
 
             if (contactNormal.x <= -0.9)
             {
-                if (pushableObj == null || !pushableObj.pushable)
+                if (!canPush || pushableObj == null || !pushableObj.pushable)
                 {
                     vel.x = Mathf.Max(vel.x, 0);
                 }
