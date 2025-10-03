@@ -13,6 +13,7 @@ public class DynamicObject : MonoBehaviour
 
     [SerializeField] protected float acceleration = 50;
 
+    protected bool isGrounded;
     [SerializeField] protected float fallGravity = -70;
     [SerializeField] protected float fallSpeed = -10;
 
@@ -40,6 +41,8 @@ public class DynamicObject : MonoBehaviour
         rb.linearVelocity = vel + referenceFrame;
 
         referenceFrame = Vector2.zero;
+
+        isGrounded = false;
     }
 
     protected virtual void OnCollisionStay2D(Collision2D collision)
@@ -63,6 +66,7 @@ public class DynamicObject : MonoBehaviour
             if (contactNormal.y >= 0.9)
             {
                 vel.y = Mathf.Max(vel.y, 0);
+                isGrounded = true;
             }
 
             if (contactNormal.y <= -0.9)

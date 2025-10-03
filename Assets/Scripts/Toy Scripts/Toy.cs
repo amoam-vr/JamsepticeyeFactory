@@ -18,7 +18,6 @@ public class Toy : DynamicObject
     //Control Variables
     protected int moveDir;
 
-    protected bool isGrounded;
     [SerializeField] protected float jumpPermisiveness = 0.15f;
     protected float jumpPermisivenessTimer;
 
@@ -28,6 +27,10 @@ public class Toy : DynamicObject
 
     [SerializeField] protected float jumpHeight = 3.5f;
     protected float jumpSpeed;
+
+    [SerializeField] float fallDamageHeight = 10;
+    float dropPos;
+
 
     private void OnValidate()
     {
@@ -80,6 +83,21 @@ public class Toy : DynamicObject
 
     protected override void FixedUpdate()
     {
+        if (isGrounded)
+        {
+            if(dropPos - rb.position.y >= fallDamageHeight)
+            {
+                Die();
+            }
+
+            dropPos = rb.position.y;
+        }
+
+        if (!isDead && vel.y >= 0)
+        {
+            dropPos = rb.position.y;
+        }
+
         if (possessedToy == toyScript)
         {
             Possesed();
