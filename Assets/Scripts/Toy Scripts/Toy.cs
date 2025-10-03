@@ -8,6 +8,7 @@ public class Toy : DynamicObject
     //Base class for toys
 
     protected static Toy possessedToy;
+    protected Toy toyScript;
     protected static List<Toy> aliveToys = new List<Toy>();
     public bool startingToy;
     protected bool isDead;
@@ -20,7 +21,6 @@ public class Toy : DynamicObject
     protected float jumpPermisivenessTimer;
 
     [SerializeField] protected float walkSpeed = 10;
-    [SerializeField] protected float walkAcceleration = 10;
 
     [SerializeField] protected float jumpGravity = -30;
 
@@ -47,11 +47,13 @@ public class Toy : DynamicObject
 
         jumpSpeed = Mathf.Sqrt(-2 * jumpGravity * jumpHeight);
 
-        aliveToys.Add(GetComponent<Toy>());
+        toyScript = GetComponent<Toy>();
+
+        aliveToys.Add(toyScript);
 
         if (possessedToy == null)
         {
-            possessedToy = GetComponent<Toy>();
+            possessedToy = toyScript;
         }
 
         aliveToys.Remove(possessedToy);
@@ -59,7 +61,7 @@ public class Toy : DynamicObject
 
     protected virtual void Update()
     {
-        if (possessedToy != this) return;
+        if (possessedToy != toyScript) return;
 
         moveDir = Mathf.RoundToInt(Input.GetAxisRaw("Horizontal"));
 
@@ -71,7 +73,7 @@ public class Toy : DynamicObject
 
     protected override void FixedUpdate()
     {
-        if (possessedToy == this)
+        if (possessedToy == toyScript)
         {
             Possesed();
         }
@@ -138,23 +140,38 @@ public class Toy : DynamicObject
         possessedToy = closestToy;
     }
 
-    protected virtual void OnCollisionStay2D(Collision2D collision)
+    protected override void OnCollisionStay2D(Collision2D collision)
     {
         //Stop player from accelerationg when hitting a ground or wall
+
+        DynamicObject pushableObj = collision.gameObject.GetComponent<DynamicObject>();
 
         for (int i = 0; i < collision.contactCount; i++)
         {
             Vector2 contactNormal = collision.GetContact(i).normal;
 
-
             if (contactNormal.x >= 0.9)
             {
-                vel.x = Mathf.Max(vel.x, 0);
+                if (pushableObj == null || !pushableObj.pushable)
+                {
+                    vel.x = Mathf.Max(vel.x, 0);
+                }
+                else
+                {
+                    pushableObj.referenceFrame.x = vel.x;
+                }
             }
 
             if (contactNormal.x <= -0.9)
             {
-                vel.x = Mathf.Min(vel.x, 0);
+                if (pushableObj == null || !pushableObj.pushable)
+                {
+                    vel.x = Mathf.Max(vel.x, 0);
+                }
+                else
+                {
+                    pushableObj.referenceFrame.x = vel.x;
+                }
             }
 
             if (contactNormal.y >= 0.9)
