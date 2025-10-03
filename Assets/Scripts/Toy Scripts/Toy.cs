@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Toy : MonoBehaviour
+public class Toy : DynamicObject
 {
     //Author: Andre
     //Base class for toys
@@ -19,21 +19,12 @@ public class Toy : MonoBehaviour
     [SerializeField] protected float jumpPermisiveness = 0.15f;
     protected float jumpPermisivenessTimer;
 
-    //Physics variables
-    protected Rigidbody2D rb;
-    
-    protected Vector2 vel;
-    protected Vector2 referenceFrame;
-
     [SerializeField] protected float walkSpeed = 10;
     [SerializeField] protected float walkAcceleration = 10;
 
-    [SerializeField] protected float lightGravity = -30;
-    [SerializeField] protected float heavyGravity = -70;
+    [SerializeField] protected float jumpGravity = -30;
 
-    [SerializeField] protected float fallSpeed = -10;
-
-    [SerializeField] protected float jumpHeight = 3;
+    [SerializeField] protected float jumpHeight = 3.5f;
     protected float jumpSpeed;
 
     private void OnValidate()
@@ -49,11 +40,12 @@ public class Toy : MonoBehaviour
         }
     }
 
-    protected virtual void Start()
+    protected override void Start()
     {
         //Initialize
-        rb = GetComponent<Rigidbody2D>();
-        jumpSpeed = Mathf.Sqrt(-2 * lightGravity * jumpHeight);
+        base.Start();
+
+        jumpSpeed = Mathf.Sqrt(-2 * jumpGravity * jumpHeight);
 
         aliveToys.Add(GetComponent<Toy>());
 
@@ -77,29 +69,25 @@ public class Toy : MonoBehaviour
         }
     }
 
-    protected virtual void FixedUpdate()
+    protected override void FixedUpdate()
     {
-        float gravity = Input.GetKey(KeyCode.Space) && vel.y > 0 ? lightGravity : heavyGravity;
-
-        vel.y = Mathf.MoveTowards(vel.y, fallSpeed, -gravity * Time.fixedDeltaTime);
-        
         if (possessedToy == this)
         {
             Possesed();
         }
         else
         {
-            Unpossesed();
+            base.FixedUpdate();
         }
-
-        rb.linearVelocity = vel + referenceFrame;
-
-        isGrounded = false; 
     }
 
     protected virtual void Possesed()
     {
-        vel.x = Mathf.MoveTowards(vel.x, walkSpeed * moveDir, walkAcceleration * Time.fixedDeltaTime);
+        vel.x = Mathf.MoveTowards(vel.x, walkSpeed * moveDir, acceleration * Time.fixedDeltaTime);
+
+        float gravity = Input.GetKey(KeyCode.Space) && vel.y > 0 ? jumpGravity : fallGravity;
+
+        vel.y = Mathf.MoveTowards(vel.y, fallSpeed, -gravity * Time.fixedDeltaTime);
 
         if (isGrounded && jumpPermisivenessTimer > 0)
         {
@@ -108,11 +96,10 @@ public class Toy : MonoBehaviour
         }
 
         jumpPermisivenessTimer = Mathf.MoveTowards(jumpPermisivenessTimer, 0, Time.fixedDeltaTime);
-    }
 
-    protected virtual void Unpossesed()
-    {
+        rb.linearVelocity = vel + referenceFrame;
 
+        isGrounded = false;
     }
 
     public virtual void Die()
