@@ -1,12 +1,16 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class Toy : MonoBehaviour
 {
     //Author: Andre
     //Base class for toys
 
-    protected static Toy activeToy;
+    protected static Toy possessedToy;
+    protected static List<Toy> aliveToys = new List<Toy>();
     public bool startingToy;
+    protected bool isDead;
 
     //Control Variables
     protected int moveDir;
@@ -24,7 +28,6 @@ public class Toy : MonoBehaviour
     [SerializeField] protected float walkSpeed = 10;
     [SerializeField] protected float walkAcceleration = 10;
 
-
     [SerializeField] protected float lightGravity = -30;
     [SerializeField] protected float heavyGravity = -70;
 
@@ -37,12 +40,12 @@ public class Toy : MonoBehaviour
     {
         if (startingToy)
         {
-            if (activeToy != null)
+            if (possessedToy != null)
             {
-                activeToy.startingToy = false;
+                possessedToy.startingToy = false;
             }
 
-            activeToy = GetComponent<Toy>();
+            possessedToy = GetComponent<Toy>();
         }
     }
 
@@ -52,15 +55,20 @@ public class Toy : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         jumpSpeed = Mathf.Sqrt(-2 * lightGravity * jumpHeight);
 
-        if (activeToy == null)
+        aliveToys.Add(GetComponent<Toy>());
+
+        if (possessedToy == null)
         {
-            activeToy = GetComponent<Toy>();
+            possessedToy = GetComponent<Toy>();
         }
+
+        aliveToys.Remove(possessedToy);
     }
 
     protected virtual void Update()
     {
-        print(activeToy.name);
+        if (possessedToy != this) return;
+
         moveDir = Mathf.RoundToInt(Input.GetAxisRaw("Horizontal"));
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -75,7 +83,7 @@ public class Toy : MonoBehaviour
 
         vel.y = Mathf.MoveTowards(vel.y, fallSpeed, -gravity * Time.fixedDeltaTime);
         
-        if (activeToy == this)
+        if (possessedToy == this)
         {
             Possesed();
         }
@@ -86,7 +94,7 @@ public class Toy : MonoBehaviour
 
         rb.linearVelocity = vel + referenceFrame;
 
-        isGrounded = false;
+        isGrounded = false; 
     }
 
     protected virtual void Possesed()
@@ -105,6 +113,42 @@ public class Toy : MonoBehaviour
     protected virtual void Unpossesed()
     {
 
+    }
+
+    public virtual void Die()
+    {
+        if (isDead) return;
+
+        isDead = true;
+
+        aliveToys.Remove(this);
+
+        if (possessedToy != this)
+        {
+            return;
+        }
+
+        //Find closest toy
+        Toy closestToy = null;
+        float closestDistance = Mathf.Infinity;
+
+        for (int i = 0; i < aliveToys.Count; i++)
+        {
+            if (closestToy == null)
+            {
+                closestToy = aliveToys[i];
+            }
+
+            float toyDistance = Vector3.Distance(transform.position, aliveToys[i].transform.position);
+            
+            if (toyDistance < closestDistance)
+            {
+                closestDistance = toyDistance;
+                closestToy = aliveToys[i];
+            }
+        }
+
+        possessedToy = closestToy;
     }
 
     protected virtual void OnCollisionStay2D(Collision2D collision)
