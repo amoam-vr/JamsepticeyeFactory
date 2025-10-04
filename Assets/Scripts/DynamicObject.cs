@@ -23,8 +23,6 @@ public class DynamicObject : MonoBehaviour
     [SerializeField] protected float fallGravity = -70;
     [SerializeField] protected float fallSpeed = -20;
 
-
-
     [HideInInspector] public bool pushable = true;
 
     protected virtual void Start()
