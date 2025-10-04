@@ -60,6 +60,8 @@ public class Piston : ActivatableGimmicks
 
     private void OnCollisionStay2D(Collision2D collision)
     {
+        if (!isActive) return;
+
         DynamicObject pushableObj = collision.gameObject.GetComponent<DynamicObject>();
 
         if (pushableObj != null && stopTimer <= 0)
