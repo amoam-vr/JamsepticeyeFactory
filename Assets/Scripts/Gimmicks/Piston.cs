@@ -43,8 +43,9 @@ public class Piston : ActivatableGimmicks
     {
         if (!cycle)
         {
+            targetPosIndex = 1;
             speed = Mathf.MoveTowards(speed, topSpeed, acceleration * Time.fixedDeltaTime);
-
+            rb.MovePosition(Vector2.MoveTowards(rb.position, positions[targetPosIndex], speed * Time.fixedDeltaTime));
             return;
         }
 
@@ -65,6 +66,17 @@ public class Piston : ActivatableGimmicks
         else
         {
             stopTimer -= Time.fixedDeltaTime;
+        }
+    }
+
+    protected override void Inactive()
+    {
+        if (!cycle)
+        {
+            targetPosIndex = 0;
+            speed = Mathf.MoveTowards(speed, topSpeed, acceleration * Time.fixedDeltaTime);
+            rb.MovePosition(Vector2.MoveTowards(rb.position, positions[targetPosIndex], speed * Time.fixedDeltaTime));
+            return;
         }
     }
 
