@@ -7,7 +7,7 @@ public class Toy : DynamicObject
     //Author: Andre
     //Base class for toys
 
-    protected static Toy possessedToy;
+    public static Toy possessedToy;
     protected Toy toyScript;
     protected static List<Toy> aliveToys = new List<Toy>();
     public bool startingToy;

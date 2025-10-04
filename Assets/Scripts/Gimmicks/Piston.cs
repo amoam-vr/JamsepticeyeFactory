@@ -7,6 +7,8 @@ public class Piston : ActivatableGimmicks
     //Author: Andre
     //A psiton that moves back and forth
 
+    [SerializeField] bool cycle = true;
+
     Rigidbody2D rb;
 
     [SerializeField] float topSpeed = 10;
@@ -23,9 +25,10 @@ public class Piston : ActivatableGimmicks
 
     int targetPosIndex;
 
-    void Start()
+    protected override void Start()
     {
         //Initialize
+        base.Start();
 
         rb = GetComponent<Rigidbody2D>();
 
@@ -38,6 +41,13 @@ public class Piston : ActivatableGimmicks
 
     protected override void Active()
     {
+        if (!cycle)
+        {
+            speed = Mathf.MoveTowards(speed, topSpeed, acceleration * Time.fixedDeltaTime);
+
+            return;
+        }
+
         if (stopTimer <= 0)
         {
             speed = Mathf.MoveTowards(speed, topSpeed, acceleration * Time.fixedDeltaTime);
@@ -60,8 +70,6 @@ public class Piston : ActivatableGimmicks
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (!isActive) return;
-
         DynamicObject pushableObj = collision.gameObject.GetComponent<DynamicObject>();
 
         if (pushableObj != null && stopTimer <= 0)
@@ -74,7 +82,6 @@ public class Piston : ActivatableGimmicks
 
     private void OnDrawGizmosSelected()
     {
-
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position + transform.up * distance, 0.5f);
     }

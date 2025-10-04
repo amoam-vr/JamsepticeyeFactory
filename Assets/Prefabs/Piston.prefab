@@ -316,9 +316,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActive: 1
+  startingState: 0
   topSpeed: 10
   acceleration: 20
-  stopDuration: 1
+  stopDuration: 0.5
   distance: 5
 --- !u!50 &7374507102732014992
 Rigidbody2D:

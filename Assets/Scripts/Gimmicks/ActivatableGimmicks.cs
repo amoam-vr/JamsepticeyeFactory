@@ -6,6 +6,12 @@ public class ActivatableGimmicks : MonoBehaviour
     //Base class for all contraptions that can be activated by a button
 
     public bool isActive;
+    [HideInInspector] public bool startingState;
+
+    protected virtual void Start()
+    {
+        startingState = isActive;
+    }
 
     void FixedUpdate()
     {
@@ -13,7 +19,12 @@ public class ActivatableGimmicks : MonoBehaviour
         {
             Active();
         }
+        else
+        {
+            Inactive();
+        }
     }
 
     protected virtual void Active() { }
+    protected virtual void Inactive() { }
 }
