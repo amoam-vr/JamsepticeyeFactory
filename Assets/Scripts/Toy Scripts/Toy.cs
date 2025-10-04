@@ -126,6 +126,8 @@ public class Toy : DynamicObject
 
         rb.linearVelocity = vel + referenceFrame;
 
+        referenceFrame = Vector2.zero;
+
         isGrounded = false;
     }
 
@@ -188,11 +190,11 @@ public class Toy : DynamicObject
             {
                 if (!canPush || pushableObj == null || !pushableObj.pushable)
                 {
-                    vel.x = Mathf.Min(vel.x, 0);
+                    vel.x = Mathf.Max(vel.x, 0);
                 }
                 else
                 {
-                    pushableObj.referenceFrame.x = vel.x;
+                    pushableObj.referenceFrame.x += vel.x;
                 }
             }
 
@@ -200,11 +202,11 @@ public class Toy : DynamicObject
             {
                 if (!canPush || pushableObj == null || !pushableObj.pushable)
                 {
-                    vel.x = Mathf.Max(vel.x, 0);
+                    vel.x = Mathf.Min(vel.x, 0);
                 }
                 else
                 {
-                    pushableObj.referenceFrame.x = vel.x;
+                    pushableObj.referenceFrame.x += vel.x;
                 }
             }
 

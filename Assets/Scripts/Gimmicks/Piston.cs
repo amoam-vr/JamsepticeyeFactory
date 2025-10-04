@@ -60,6 +60,20 @@ public class Piston : ActivatableGimmicks
 
     private void OnCollisionStay2D(Collision2D collision)
     {
+        DynamicObject pushableObj = collision.gameObject.GetComponent<DynamicObject>();
 
+        if (pushableObj != null && stopTimer <= 0)
+        {
+            Vector2 dir = (positions[targetPosIndex] - (Vector2)transform.position).normalized;
+
+            pushableObj.referenceFrame += dir * (Mathf.Clamp(speed + Time.fixedDeltaTime * 20, 0, topSpeed));
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position + transform.up * distance, 0.5f);
     }
 }

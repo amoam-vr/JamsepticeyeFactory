@@ -53,13 +53,13 @@ public class DynamicObject : MonoBehaviour
 
             if (contactNormal.x >= 0.9)
             {
-                vel.x = Mathf.Min(vel.x, 0);
+                vel.x = Mathf.Max(vel.x, 0);
                 leftWall = true;
             }
 
             if (contactNormal.x <= -0.9)
             {
-                vel.x = Mathf.Max(vel.x, 0);
+                vel.x = Mathf.Min(vel.x, 0);
                 rightWall = true;
             }
 
