@@ -31,6 +31,7 @@ public class Toy : DynamicObject
     [SerializeField] float fallDamageHeight = 10;
     float dropPos;
 
+    public bool isMetalic;
 
     private void OnValidate()
     {
