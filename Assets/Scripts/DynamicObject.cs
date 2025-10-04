@@ -10,6 +10,8 @@ public class DynamicObject : MonoBehaviour
     //Physics variables
     protected Rigidbody2D rb;
 
+    public int weight;
+
     protected Vector2 vel;
     [HideInInspector] public Vector2 referenceFrame;
 

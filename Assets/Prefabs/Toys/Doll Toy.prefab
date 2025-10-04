@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46edc65ad4351a64bb6119b22a6a21af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weight: 2
   referenceFrame: {x: 0, y: 0}
   acceleration: 50
   fallGravity: -70

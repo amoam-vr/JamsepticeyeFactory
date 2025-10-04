@@ -124,7 +124,7 @@ public class Toy : DynamicObject
             {
                 DynamicObject pushableObj = obj.GetComponent<DynamicObject>();
 
-                if (pushableObj != null && pushableObj.pushable)
+                if (pushableObj != null && pushableObj.pushable && weight >= pushableObj.weight)
                 {
                     clearList = true;
                     pushableObj.referenceFrame.x += vel.x;
@@ -144,7 +144,7 @@ public class Toy : DynamicObject
             {
                 DynamicObject pushableObj = obj.GetComponent<DynamicObject>();
 
-                if (pushableObj != null && pushableObj.pushable)
+                if (pushableObj != null && pushableObj.pushable && weight >= pushableObj.weight)
                 {
                     clearList = true;
                     pushableObj.referenceFrame.x += vel.x;

@@ -17,6 +17,11 @@ public class RobotToy : Toy
 
     protected override void Unpossessed()
     {
+        if (isDead)
+        {
+            moveDir = 0;
+        }
+
         vel.x = Mathf.MoveTowards(vel.x, walkSpeed * moveDir, acceleration * Time.fixedDeltaTime);
 
         vel.y = Mathf.MoveTowards(vel.y, fallSpeed, -fallGravity * Time.fixedDeltaTime);

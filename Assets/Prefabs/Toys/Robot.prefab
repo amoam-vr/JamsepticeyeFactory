@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d960a4ec1e11e74faaa22646169adb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weight: 3
   referenceFrame: {x: 0, y: 0}
   acceleration: 50
   fallGravity: -70
@@ -57,9 +58,9 @@ MonoBehaviour:
   walkSpeed: 3
   jumpGravity: -30
   jumpHeight: 1.5
-  fallDamageHeight: 10
+  fallDamageHeight: 5
   isMetalic: 1
-  initialDir: -1
+  initialDir: 0
   turnCooldown: 0.5
 --- !u!50 &6102262704175760252
 Rigidbody2D:
