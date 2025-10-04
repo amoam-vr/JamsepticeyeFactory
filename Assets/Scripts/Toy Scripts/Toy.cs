@@ -64,10 +64,7 @@ public class Toy : DynamicObject
 
         aliveToys.Remove(possessedToy);
 
-        if (possessedToy == toyScript)
-        {
-            canPush = true;
-        }
+        canPush = possessedToy == toyScript;
     }
 
     protected virtual void Update()
@@ -84,7 +81,7 @@ public class Toy : DynamicObject
 
     protected override void FixedUpdate()
     {
-        if (isGrounded)
+        if (groundObjs.Count > 0)
         {
             if(dropPos - rb.position.y >= fallDamageHeight)
             {
@@ -101,15 +98,17 @@ public class Toy : DynamicObject
 
         if (possessedToy == toyScript)
         {
-            Possesed();
+            Move();
         }
         else
         {
             Unpossessed();
         }
+
+        base.ColUpdate();
     }
 
-    protected virtual void Possesed()
+    protected override void Move()
     {
         vel.x = Mathf.MoveTowards(vel.x, walkSpeed * moveDir, acceleration * Time.fixedDeltaTime);
 
@@ -117,24 +116,18 @@ public class Toy : DynamicObject
 
         vel.y = Mathf.MoveTowards(vel.y, fallSpeed, -gravity * Time.fixedDeltaTime);
 
-        if (isGrounded && jumpPermisivenessTimer > 0)
+        if (groundObjs.Count > 0 && jumpPermisivenessTimer > 0)
         {
             vel.y = jumpSpeed;
             jumpPermisivenessTimer = 0;
         }
 
         jumpPermisivenessTimer = Mathf.MoveTowards(jumpPermisivenessTimer, 0, Time.fixedDeltaTime);
-
-        rb.linearVelocity = vel + referenceFrame;
-
-        referenceFrame = Vector2.zero;
-
-        isGrounded = false;
     }
 
     protected virtual void Unpossessed()
     {
-        base.FixedUpdate();
+        base.Move();
     }
 
     public virtual void Die()
@@ -175,6 +168,11 @@ public class Toy : DynamicObject
         possessedToy = closestToy;
     }
 
+    private void OnDestroy()
+    {
+        Die();
+    }
+
     protected override void OnCollisionStay2D(Collision2D collision)
     {
         //Stop player from accelerationg when hitting a ground or wall
@@ -183,43 +181,42 @@ public class Toy : DynamicObject
 
         DynamicObject pushableObj = collision.gameObject.GetComponent<DynamicObject>();
 
+        bool pushLeft = false;
+        bool pushRight = false;
+
         for (int i = 0; i < collision.contactCount; i++)
         {
             Vector2 contactNormal = collision.GetContact(i).normal;
 
             if (contactNormal.x >= 0.9)
             {
-                if (!canPush || pushableObj == null || !pushableObj.pushable)
+                if (canPush && pushableObj != null && pushableObj == pushable)
                 {
-                    vel.x = Mathf.Max(vel.x, 0);
-                }
-                else
-                {
-                    pushableObj.referenceFrame.x += vel.x;
+                    pushLeft = true;
                 }
             }
 
             if (contactNormal.x <= -0.9)
             {
-                if (!canPush || pushableObj == null || !pushableObj.pushable)
+                if (canPush && pushableObj != null && pushableObj == pushable)
                 {
-                    vel.x = Mathf.Min(vel.x, 0);
-                }
-                else
-                {
-                    pushableObj.referenceFrame.x += vel.x;
+                    pushRight = true;
                 }
             }
+        }
 
-            if (contactNormal.y >= 0.9)
+        if (canPush && pushableObj != null && pushableObj == pushable && (pushLeft || pushRight))
+        {
+            pushableObj.referenceFrame.x += vel.x;
+
+            if (pushRight)
             {
-                vel.y = Mathf.Max(vel.y, 0);
-                isGrounded = true;
+                rightWallObjs.Clear();
             }
 
-            if (contactNormal.y <= -0.9)
+            if (pushLeft)
             {
-                vel.y = Mathf.Min(vel.y, 0);
+                leftWallObjs.Clear();
             }
         }
     }
