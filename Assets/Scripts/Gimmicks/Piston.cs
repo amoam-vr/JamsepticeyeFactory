@@ -1,0 +1,65 @@
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+
+public class Piston : ActivatableGimmicks
+{
+    //Author: Andre
+    //A psiton that moves back and forth
+
+    Rigidbody2D rb;
+
+    [SerializeField] float topSpeed = 10;
+    [SerializeField] float acceleration = 20;
+    float speed;
+
+    [SerializeField] float stopDuration = 1;
+    float stopTimer;
+
+    [SerializeField] float distance = 5;
+
+    Vector2[] positions;
+
+
+    int targetPosIndex;
+
+    void Start()
+    {
+        //Initialize
+
+        rb = GetComponent<Rigidbody2D>();
+
+        positions = new Vector2[2];
+
+        positions[0] = transform.position;
+
+        positions[1] = transform.position + (transform.up * distance);
+    }
+
+    protected override void Active()
+    {
+        if (stopTimer <= 0)
+        {
+            speed = Mathf.MoveTowards(speed, topSpeed, acceleration * Time.fixedDeltaTime);
+
+            rb.MovePosition(Vector2.MoveTowards(rb.position, positions[targetPosIndex], speed * Time.fixedDeltaTime));
+            
+            if (rb.position == positions[targetPosIndex])
+            {
+                targetPosIndex++;
+                targetPosIndex = targetPosIndex % 2;
+                speed = 0;
+                stopTimer = stopDuration;
+            }
+        }
+        else
+        {
+            stopTimer -= Time.fixedDeltaTime;
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+
+    }
+}
