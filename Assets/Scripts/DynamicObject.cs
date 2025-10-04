@@ -21,7 +21,7 @@ public class DynamicObject : MonoBehaviour
     protected List<GameObject> rightWallObjs = new List<GameObject>();
 
     [SerializeField] protected float fallGravity = -70;
-    [SerializeField] protected float fallSpeed = -10;
+    [SerializeField] protected float fallSpeed = -20;
 
 
 
@@ -47,7 +47,6 @@ public class DynamicObject : MonoBehaviour
 
     void CrushCheck()
     {
-
         bool staticGround = false;
         foreach (var obj in groundObjs)
         {
@@ -93,6 +92,16 @@ public class DynamicObject : MonoBehaviour
     protected virtual void ColUpdate()
     {
         pushable = !(leftWallObjs.Count > 0 && rightWallObjs.Count > 0);
+
+        foreach (var obj in ceilingObjs)
+        {
+            DynamicObject pushableObj = obj.GetComponent<DynamicObject>();
+
+            if (pushableObj != null && pushableObj.pushable)
+            {
+                pushableObj.referenceFrame += rb.linearVelocity;
+            }
+        }
 
         CrushCheck();
 

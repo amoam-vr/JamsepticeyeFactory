@@ -1741,6 +1741,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Doll Toy
       objectReference: {fileID: 0}
+    - target: {fileID: 5367152265108031663, guid: 658690d2afb8b2d4e93085155f62aa70, type: 3}
+      propertyPath: startingToy
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6088961433966384706, guid: 658690d2afb8b2d4e93085155f62aa70, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1

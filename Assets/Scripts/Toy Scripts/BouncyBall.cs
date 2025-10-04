@@ -3,10 +3,11 @@ using UnityEngine;
 public class BouncyBall : Toy
 {
     //Author: Andre
-    //Base class for toys
+    //A bouncy ball
 
     [SerializeField] float minBounceHeight = 1;
     [SerializeField] float minBounceHorizontal = 5;
+    float bounceCoolDown;
 
     protected override void ColUpdate()
     {
@@ -23,9 +24,15 @@ public class BouncyBall : Toy
             dropPos = rb.position.y;
         }
 
-        if (Mathf.Abs(vel.x) >= 5 && (leftWallObjs.Count > 0 || rightWallObjs.Count > 0))
+        if (Mathf.Abs(vel.x) >= minBounceHorizontal && bounceCoolDown <= 0 && (leftWallObjs.Count > 0 || rightWallObjs.Count > 0))
         {
-            vel.x = -1 * vel.x;
+            vel.x *= -1;
+            bounceCoolDown = Time.fixedDeltaTime * 2;
+        }
+
+        if (bounceCoolDown > 0)
+        {
+            bounceCoolDown -= Time.fixedDeltaTime;
         }
 
         base.ColUpdate();

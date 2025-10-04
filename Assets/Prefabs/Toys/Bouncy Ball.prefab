@@ -60,7 +60,7 @@ MonoBehaviour:
   fallDamageHeight: Infinity
   isMetalic: 0
   minBounceHeight: 1
-  minBounceHorizontal: 5
+  minBounceHorizontal: 10
 --- !u!50 &1496935155654037190
 Rigidbody2D:
   serializedVersion: 5

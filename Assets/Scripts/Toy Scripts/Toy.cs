@@ -94,12 +94,13 @@ public class Toy : DynamicObject
         {
             Unpossessed();
         }
-
+        PushCheck();
         ColUpdate();
     }
 
     protected override void ColUpdate()
     {
+        //Fall damage
         if (groundObjs.Count > 0)
         {
             if (dropPos - rb.position.y >= fallDamageHeight)
@@ -111,6 +112,50 @@ public class Toy : DynamicObject
         }
 
         base.ColUpdate();
+    }
+
+    protected virtual void PushCheck()
+    {
+        //Push objects
+        if (vel.x > 0)
+        {
+            bool clearList = false;
+            foreach (var obj in rightWallObjs)
+            {
+                DynamicObject pushableObj = obj.GetComponent<DynamicObject>();
+
+                if (pushableObj != null && pushableObj.pushable)
+                {
+                    clearList = true;
+                    pushableObj.referenceFrame.x += vel.x;
+                }
+            }
+
+            if (clearList)
+            {
+                rightWallObjs.Clear();
+            }
+        }
+
+        if (vel.x < 0)
+        {
+            bool clearList = false;
+            foreach (var obj in leftWallObjs)
+            {
+                DynamicObject pushableObj = obj.GetComponent<DynamicObject>();
+
+                if (pushableObj != null && pushableObj.pushable)
+                {
+                    clearList = true;
+                    pushableObj.referenceFrame.x += vel.x;
+                }
+            }
+
+            if (clearList)
+            {
+                leftWallObjs.Clear();
+            }
+        }
     }
 
     protected override void Move()
@@ -178,6 +223,7 @@ public class Toy : DynamicObject
         Die();
     }
 
+    /*
     protected override void OnCollisionStay2D(Collision2D collision)
     {
         //Stop player from accelerationg when hitting a ground or wall
@@ -225,4 +271,6 @@ public class Toy : DynamicObject
             }
         }
     }
+
+    */
 }
