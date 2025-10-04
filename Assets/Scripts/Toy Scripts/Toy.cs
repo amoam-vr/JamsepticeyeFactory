@@ -29,7 +29,7 @@ public class Toy : DynamicObject
     protected float jumpSpeed;
 
     [SerializeField] float fallDamageHeight = 10;
-    float dropPos;
+    protected float dropPos;
 
     public bool isMetalic;
 
@@ -81,16 +81,6 @@ public class Toy : DynamicObject
 
     protected override void FixedUpdate()
     {
-        if (groundObjs.Count > 0)
-        {
-            if(dropPos - rb.position.y >= fallDamageHeight)
-            {
-                Die();
-            }
-
-            dropPos = rb.position.y;
-        }
-
         if (!isDead && vel.y >= 0)
         {
             dropPos = rb.position.y;
@@ -103,6 +93,21 @@ public class Toy : DynamicObject
         else
         {
             Unpossessed();
+        }
+
+        ColUpdate();
+    }
+
+    protected override void ColUpdate()
+    {
+        if (groundObjs.Count > 0)
+        {
+            if (dropPos - rb.position.y >= fallDamageHeight)
+            {
+                Die();
+            }
+
+            dropPos = rb.position.y;
         }
 
         base.ColUpdate();

@@ -76,7 +76,7 @@ public class DynamicObject : MonoBehaviour
         }
 
         bool staticLeftWall = false;
-        foreach (var obj in groundObjs)
+        foreach (var obj in leftWallObjs)
         {
             if (obj.GetComponent<DynamicObject>() == null)
             {
