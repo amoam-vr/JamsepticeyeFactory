@@ -46,8 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0db793404ee03f646854d0c9078c214a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gimmicks:
-  - {fileID: 0}
+  gimmicks: []
 --- !u!61 &3523402647386473130
 BoxCollider2D:
   m_ObjectHideFlags: 0

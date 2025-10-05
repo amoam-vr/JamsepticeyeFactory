@@ -21,6 +21,21 @@ public class ConveyorBelt : ActivatableGimmicks
 
     [SerializeField] InactiveBehaviour inactiveBehaviour;
 
+    List<Material> conveyorMaterials = new List<Material>();
+    int materialDir;
+
+    string materialFloatID = "Speed";
+
+    protected override void Start()
+    {
+        base.Start();
+
+        for (int i = 1; i < transform.childCount; i++)
+        {
+            conveyorMaterials.Add(transform.GetChild(i).GetComponent<MeshRenderer>().material);
+        }
+    }
+
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
@@ -40,11 +55,31 @@ public class ConveyorBelt : ActivatableGimmicks
                 pushableObj.referenceFrame.x += speed * dir;
             }
         }
+
+        if (materialDir == dir) return;
+
+        foreach (var material in conveyorMaterials)
+        {
+            material.SetFloat(materialFloatID, dir);
+        }
+
+        materialDir = dir;
     }
 
     protected override void Inactive()
     {
-        if (inactiveBehaviour == InactiveBehaviour.Stop) return;
+        if (inactiveBehaviour == InactiveBehaviour.Stop)
+        {
+            if (materialDir == 0) return;
+
+            foreach (var material in conveyorMaterials)
+            {
+                material.SetFloat(materialFloatID, 0);
+            }
+
+            materialDir = 0;
+            return;
+        }
 
         //Move other objects on top of this conveyor belt
         foreach (var obj in ceilingObjs)
@@ -56,6 +91,15 @@ public class ConveyorBelt : ActivatableGimmicks
                 pushableObj.referenceFrame.x += speed * dir * -1;
             }
         }
+
+        if (materialDir == dir * -1) return;
+
+        foreach (var material in conveyorMaterials)
+        {
+            material.SetFloat(materialFloatID, dir * -1);
+        }
+
+        materialDir = dir * -1;
     }
 
     private void OnCollisionStay2D(Collision2D collision)
