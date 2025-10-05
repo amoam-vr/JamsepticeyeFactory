@@ -1,11 +1,13 @@
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Toy : DynamicObject
 {
     //Author: Andre
     //Base class for toys
+    // Contributors: Gustavo
 
     public static Toy possessedToy;
     protected Toy toyScript;
@@ -200,6 +202,15 @@ public class Toy : DynamicObject
             {
                 closestDistance = toyDistance;
                 closestToy = aliveToys[i];
+            }
+        }
+
+        // Check if the toy is within the range of a spirit seal
+        foreach (GameObject seal in GameObject.FindGameObjectsWithTag("SpiritSeal"))
+        {
+            if (seal.GetComponent<SpiritSeal>().SealingRadius > Vector3.Distance(transform.position, seal.transform.position))
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
 
