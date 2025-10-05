@@ -93,6 +93,7 @@ public class DynamicObject : MonoBehaviour
     {
         pushable = !(leftWallObjs.Count > 0 && rightWallObjs.Count > 0);
 
+        //Move other objects on top of this object
         foreach (var obj in ceilingObjs)
         {
             DynamicObject pushableObj = obj.GetComponent<DynamicObject>();

@@ -9,14 +9,9 @@ public class Button : MonoBehaviour
 
     [SerializeField] List<ActivatableGimmicks> gimmicks;
 
-    bool pressedDown;
+    protected bool pressedDown;
 
-    void Start()
-    {
-        
-    }
-
-    void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         if (pressedDown)
         {
