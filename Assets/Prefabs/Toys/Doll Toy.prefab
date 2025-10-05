@@ -481,7 +481,7 @@ MonoBehaviour:
   walkSpeed: 10
   jumpGravity: -30
   jumpHeight: 3.5
-  fallDamageHeight: 10
+  fallDamageHeight: 8
   isMetalic: 0
 --- !u!50 &3446846625997592448
 Rigidbody2D:
