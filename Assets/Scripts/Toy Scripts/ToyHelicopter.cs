@@ -18,6 +18,8 @@ public class ToyHelicopter : Toy
 
         flyDir.x = Mathf.RoundToInt(Input.GetAxisRaw("Horizontal"));
         flyDir.y = Mathf.RoundToInt(Input.GetAxisRaw("Vertical"));
+
+        animator.SetFloat("Direction", (int)flyDir.x);
     }
 
     protected override void Move()
