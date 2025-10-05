@@ -54,11 +54,15 @@ MonoBehaviour:
   fallSpeed: -20
   pushable: 1
   startingToy: 1
+  isDead: 0
+  animator: {fileID: 0}
+  character: {fileID: 0}
+  walkAnimMult: 1
   jumpPermisiveness: 0
   walkSpeed: 10
   jumpGravity: -70
   jumpHeight: 0
-  fallDamageHeight: 10
+  fallDamageHeight: Infinity
   isMetalic: 1
 --- !u!50 &7645401466560438372
 Rigidbody2D:
