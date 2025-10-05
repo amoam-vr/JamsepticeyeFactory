@@ -9,11 +9,14 @@ public class Toy : DynamicObject
     //Base class for toys
     // Contributors: Gustavo
 
+    public delegate void ToyDeath(Toy toy);
+    public static event ToyDeath ToyDied;
+
     public static Toy possessedToy;
     protected Toy toyScript;
     protected static List<Toy> aliveToys = new List<Toy>();
     public bool startingToy;
-    protected bool isDead;
+    public bool isDead;
     public Animator animator;
     public Transform character;
     public float walkAnimMult = 1;
@@ -65,13 +68,16 @@ public class Toy : DynamicObject
 
         moveDir = Mathf.RoundToInt(Input.GetAxisRaw("Horizontal"));
 
-        animator.SetInteger("MoveState", Mathf.Abs(moveDir) > 0 ? 1 : 0);
-        animator.SetFloat("Velocity", Mathf.Abs(rb.linearVelocity.x * walkAnimMult));
-        character.rotation = Quaternion.Euler(0, 180 - moveDir * 90, 0);
-
         if (Input.GetKeyDown(KeyCode.Space))
         {
             jumpPermisivenessTimer = jumpPermisiveness;
+        }
+
+        if (animator != null)
+        {
+            animator.SetInteger("MoveState", Mathf.Abs(moveDir) > 0 ? 1 : 0);
+            animator.SetFloat("Velocity", Mathf.Abs(rb.linearVelocity.x * walkAnimMult));
+            character.rotation = Quaternion.Euler(0, 180 - moveDir * 90, 0);
         }
     }
 
@@ -221,6 +227,7 @@ public class Toy : DynamicObject
         }
 
         // Check if the toy is within the range of a spirit seal
+        /*
         foreach (GameObject seal in GameObject.FindGameObjectsWithTag("SpiritSeal"))
         {
             if (seal.GetComponent<SpiritSeal>().SealingRadius > Vector3.Distance(transform.position, seal.transform.position))
@@ -228,8 +235,11 @@ public class Toy : DynamicObject
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
-
-        possessedToy = closestToy;
+        */
+        if (ToyDied != null)
+        {
+            ToyDied(closestToy);
+        }
     }
 
     private void OnDestroy()

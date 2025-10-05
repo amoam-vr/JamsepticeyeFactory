@@ -4,12 +4,25 @@ public class SpiritSeal : MonoBehaviour
 {
     // Author: Gustavo
     // Marks the location of a spirit seal to reset the level if a toy dies too close to it
+    //Contributor: Andre
 
-    public float SealingRadius = 5;
-    public Transform radiusVisualizer;
+    Ghost ghost;
+    float radius;
 
-    private void Awake()
+    private void Start()
     {
-        radiusVisualizer.localScale = new Vector3(SealingRadius * 2, SealingRadius * 2, 1);
+        ghost = GameObject.FindWithTag("Ghost").GetComponent<Ghost>();
+
+        radius = transform.localScale.x / 2;
+    }
+
+    private void Update()
+    {
+        if (!Toy.possessedToy.isDead) return;
+
+        if (Vector2.Distance(ghost.transform.position, transform.position) <= radius)
+        {
+            ghost.TrueDeath();
+        }
     }
 }

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - SpiritSeal
   - Soft Landing
+  - Ghost
   layers:
   - Default
   - TransparentFX
