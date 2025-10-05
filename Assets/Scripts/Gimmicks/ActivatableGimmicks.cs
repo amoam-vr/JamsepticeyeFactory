@@ -13,7 +13,7 @@ public class ActivatableGimmicks : MonoBehaviour
         startingState = isActive;
     }
 
-    void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         if (isActive)
         {
