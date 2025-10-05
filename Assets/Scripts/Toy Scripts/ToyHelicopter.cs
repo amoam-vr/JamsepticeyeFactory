@@ -25,6 +25,7 @@ public class ToyHelicopter : Toy
         if (!Input.GetKey(KeyCode.Space))
         {
             vel = Vector2.MoveTowards(vel, flyDir * walkSpeed, acceleration * Time.fixedDeltaTime);
+            dropPos = rb.position.y;
             return;
         }
 
