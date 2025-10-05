@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Truss
+  m_Name: Backtile
   m_Shader: {fileID: -6465566751694194690, guid: c8bd9ee3bfc55a843989ad4e90419dfe, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -25,7 +25,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Base:
-        m_Texture: {fileID: 2800000, guid: 3afd59aec93dba546b144085345912f4, type: 3}
+        m_Texture: {fileID: 2800000, guid: 7b93df057af419144aece5f99600e07a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
