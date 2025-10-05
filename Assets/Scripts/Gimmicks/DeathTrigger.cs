@@ -11,7 +11,7 @@ public class DeathTrigger : MonoBehaviour
 
         if (toy != null)
         {
-            toy.Die();
+            Destroy(toy.gameObject);
         }
     }
 }

@@ -14,19 +14,15 @@ public class Ghost : MonoBehaviour
     Toy targetToy;
     Vector2 deadToyPos;
 
-    Collider2D ghostCollider;
-
     SpriteRenderer ghostSprite;
 
     private void Start()
     {
         ghostSprite = GetComponent<SpriteRenderer>();
-        ghostCollider = GetComponent<Collider2D>();
 
         possessionTimer = possessionDuration;
 
         targetToy = null;
-        ghostCollider.enabled = false;
         ghostSprite.enabled = false;
     }
 
@@ -54,7 +50,6 @@ public class Ghost : MonoBehaviour
                 Time.timeScale = 1;
 
                 targetToy = null;
-                ghostCollider.enabled = false;
                 ghostSprite.enabled = false;
             }
         }
@@ -75,8 +70,6 @@ public class Ghost : MonoBehaviour
             targetToy = toy;
 
             possessionTimer = 0;
-
-            ghostCollider.enabled = true;
             ghostSprite.enabled = true;
         }
     }
