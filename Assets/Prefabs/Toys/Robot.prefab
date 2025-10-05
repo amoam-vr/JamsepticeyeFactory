@@ -51,7 +51,7 @@ MonoBehaviour:
   referenceFrame: {x: 0, y: 0}
   acceleration: 50
   fallGravity: -70
-  fallSpeed: -10
+  fallSpeed: -20
   pushable: 1
   startingToy: 0
   jumpPermisiveness: 0.15

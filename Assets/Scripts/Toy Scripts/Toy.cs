@@ -33,19 +33,6 @@ public class Toy : DynamicObject
 
     public bool isMetalic;
 
-    private void OnValidate()
-    {
-        if (startingToy)
-        {
-            if (possessedToy != null)
-            {
-                possessedToy.startingToy = false;
-            }
-
-            possessedToy = GetComponent<Toy>();
-        }
-    }
-
     protected override void Start()
     {
         //Initialize
@@ -57,7 +44,7 @@ public class Toy : DynamicObject
 
         aliveToys.Add(toyScript);
 
-        if (possessedToy == null)
+        if (startingToy)
         {
             possessedToy = toyScript;
         }
@@ -106,6 +93,7 @@ public class Toy : DynamicObject
             if (dropPos - rb.position.y >= fallDamageHeight)
             {
                 Die();
+                vel = Vector2.zero;
             }
 
             dropPos = rb.position.y;
