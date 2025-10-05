@@ -14,6 +14,9 @@ public class Toy : DynamicObject
     protected static List<Toy> aliveToys = new List<Toy>();
     public bool startingToy;
     protected bool isDead;
+    public Animator animator;
+    public Transform character;
+    public float walkAnimMult = 1;
 
     protected bool canPush;
 
@@ -61,6 +64,10 @@ public class Toy : DynamicObject
         if (possessedToy != toyScript) return;
 
         moveDir = Mathf.RoundToInt(Input.GetAxisRaw("Horizontal"));
+
+        animator.SetInteger("MoveState", Mathf.Abs(moveDir) > 0 ? 1 : 0);
+        animator.SetFloat("Velocity", Mathf.Abs(rb.linearVelocity.x * walkAnimMult));
+        character.rotation = Quaternion.Euler(0, 180 - moveDir * 90, 0);
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
