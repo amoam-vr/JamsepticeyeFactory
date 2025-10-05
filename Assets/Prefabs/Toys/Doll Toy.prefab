@@ -167,7 +167,7 @@ Transform:
   m_GameObject: {fileID: 825445729260884164}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0.0000029504295}
-  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -473,6 +473,7 @@ MonoBehaviour:
   fallSpeed: -20
   pushable: 1
   startingToy: 0
+  isDead: 0
   animator: {fileID: 7859757106773989112}
   character: {fileID: 17805667046066814}
   walkAnimMult: 0.5
@@ -543,7 +544,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.25}
+  m_Offset: {x: 0, y: 0.75}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
