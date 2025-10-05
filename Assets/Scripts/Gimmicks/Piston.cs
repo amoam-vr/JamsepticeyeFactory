@@ -37,6 +37,11 @@ public class Piston : ActivatableGimmicks
         positions[0] = transform.position;
 
         positions[1] = transform.position + (transform.up * distance);
+
+        if (isActive && !cycle)
+        {
+            rb.position = positions[1];
+        }
     }
 
     protected override void Active()

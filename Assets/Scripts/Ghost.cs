@@ -53,6 +53,13 @@ public class Ghost : MonoBehaviour
                 ghostSprite.enabled = false;
             }
         }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                TrueDeath();
+            }
+        }
     }
 
     void OnToyDeath(Toy toy)

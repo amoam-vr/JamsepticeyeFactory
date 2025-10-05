@@ -478,7 +478,7 @@ MonoBehaviour:
   character: {fileID: 17805667046066814}
   walkAnimMult: 0.5
   jumpPermisiveness: 0.15
-  walkSpeed: 10
+  walkSpeed: 7
   jumpGravity: -30
   jumpHeight: 3.5
   fallDamageHeight: 8
