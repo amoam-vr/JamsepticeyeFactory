@@ -455,6 +455,10 @@ PrefabInstance:
       value: Heavy Button
       objectReference: {fileID: 0}
     - target: {fileID: 1429715860768367332, guid: 8f14e323ac3373a47ab88f06c80933ac, type: 3}
+      propertyPath: topSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1429715860768367332, guid: 8f14e323ac3373a47ab88f06c80933ac, type: 3}
       propertyPath: gimmicks.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -4596,7 +4600,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4140103553570764671, guid: 7d0833ea9a05de5468abb93f9b029dac, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.5
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4140103553570764671, guid: 7d0833ea9a05de5468abb93f9b029dac, type: 3}
       propertyPath: m_LocalPosition.y
