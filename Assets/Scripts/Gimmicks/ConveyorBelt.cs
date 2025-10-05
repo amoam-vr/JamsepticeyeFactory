@@ -24,7 +24,7 @@ public class ConveyorBelt : ActivatableGimmicks
     List<Material> conveyorMaterials = new List<Material>();
     int materialDir;
 
-    string materialFloatID = "Speed";
+    string materialFloatID = "_Speed";
 
     protected override void Start()
     {
@@ -56,11 +56,13 @@ public class ConveyorBelt : ActivatableGimmicks
             }
         }
 
+        //Change direction of material
+
         if (materialDir == dir) return;
 
         foreach (var material in conveyorMaterials)
         {
-            material.SetFloat(materialFloatID, dir);
+            material.SetFloat(materialFloatID, dir * speed);
         }
 
         materialDir = dir;
@@ -68,6 +70,8 @@ public class ConveyorBelt : ActivatableGimmicks
 
     protected override void Inactive()
     {
+        //Change direction of material
+
         if (inactiveBehaviour == InactiveBehaviour.Stop)
         {
             if (materialDir == 0) return;
@@ -92,11 +96,12 @@ public class ConveyorBelt : ActivatableGimmicks
             }
         }
 
+        //Change direction of material
         if (materialDir == dir * -1) return;
 
         foreach (var material in conveyorMaterials)
         {
-            material.SetFloat(materialFloatID, dir * -1);
+            material.SetFloat(materialFloatID, speed * dir * -1);
         }
 
         materialDir = dir * -1;

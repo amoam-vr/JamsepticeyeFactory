@@ -101,8 +101,14 @@ public class Toy : DynamicObject
         {
             if (dropPos - rb.position.y >= fallDamageHeight)
             {
-                Die();
-                vel = Vector2.zero;
+                foreach (var obj in groundObjs)
+                {
+                    if (!obj.CompareTag("Soft Landing"))
+                    {
+                        Die();
+                        break;
+                    }
+                }
             }
 
             dropPos = rb.position.y;
@@ -187,6 +193,8 @@ public class Toy : DynamicObject
 
         aliveToys.Remove(this);
 
+        vel = Vector2.zero;
+
         if (possessedToy != this)
         {
             return;
@@ -228,55 +236,4 @@ public class Toy : DynamicObject
     {
         Die();
     }
-
-    /*
-    protected override void OnCollisionStay2D(Collision2D collision)
-    {
-        //Stop player from accelerationg when hitting a ground or wall
-
-        base.OnCollisionStay2D(collision);
-
-        DynamicObject pushableObj = collision.gameObject.GetComponent<DynamicObject>();
-
-        bool pushLeft = false;
-        bool pushRight = false;
-
-        for (int i = 0; i < collision.contactCount; i++)
-        {
-            Vector2 contactNormal = collision.GetContact(i).normal;
-
-            if (contactNormal.x >= 0.9)
-            {
-                if (canPush && pushableObj != null && pushableObj == pushable)
-                {
-                    pushLeft = true;
-                }
-            }
-
-            if (contactNormal.x <= -0.9)
-            {
-                if (canPush && pushableObj != null && pushableObj == pushable)
-                {
-                    pushRight = true;
-                }
-            }
-        }
-
-        if (canPush && pushableObj != null && pushableObj == pushable && (pushLeft || pushRight))
-        {
-            pushableObj.referenceFrame.x += vel.x;
-
-            if (pushRight)
-            {
-                rightWallObjs.Clear();
-            }
-
-            if (pushLeft)
-            {
-                leftWallObjs.Clear();
-            }
-        }
-    }
-
-    */
 }
