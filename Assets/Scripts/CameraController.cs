@@ -4,6 +4,7 @@ public class CameraController : MonoBehaviour
 {
     // Author: Gustavo
     // Controls camera movement
+    //Contributors: Andre
 
     public float followSpeed;
     public float zDistance;
@@ -14,6 +15,7 @@ public class CameraController : MonoBehaviour
     private void Start()
     {
         ghost = GameObject.FindWithTag("Ghost").transform;
+        transform.position = Toy.possessedToy.transform.position;
     }
 
     private void Update()
