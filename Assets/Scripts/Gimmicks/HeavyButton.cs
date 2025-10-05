@@ -22,7 +22,7 @@ public class HeavyButton : Button
     float inactivePosY;
     float activePosY;
 
-    void Start()
+    protected override void Start()
     {
         rb = GetComponent<Rigidbody2D>();
 
@@ -34,6 +34,14 @@ public class HeavyButton : Button
 
         inactivePosY = rb.position.y;
         activePosY = inactivePosY - buttonHeight;
+
+        base.Start();
+
+        for (int i = 0; i < connectingLines.Count; i++)
+        {
+            connectingLines[i].SetPosition(0, new Vector2(springCol.bounds.center.x, springCol.bounds.min.y));
+        }
+
     }
 
     protected override void FixedUpdate()
