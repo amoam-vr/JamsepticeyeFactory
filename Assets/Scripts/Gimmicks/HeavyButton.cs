@@ -14,8 +14,9 @@ public class HeavyButton : Button
     [SerializeField] float topSpeed = 10;
     [SerializeField] AnimationCurve speedAnimCurve;
 
-    Collider2D platformCol;
-    Collider2D springCol;
+    BoxCollider2D platformCol;
+    BoxCollider2D springCol;
+    Transform springTransform;
     float buttonHeight;
 
     float inactivePosY;
@@ -25,8 +26,9 @@ public class HeavyButton : Button
     {
         rb = GetComponent<Rigidbody2D>();
 
-        platformCol = GetComponent<Collider2D>();
-        springCol = transform.parent.GetChild(1).GetComponent<Collider2D>();
+        platformCol = GetComponent<BoxCollider2D>();
+        springTransform = transform.parent.GetChild(1);
+        springCol = springTransform.GetComponentInChildren<BoxCollider2D>();
 
         buttonHeight = platformCol.bounds.min.y - springCol.bounds.min.y;
 
@@ -38,9 +40,11 @@ public class HeavyButton : Button
     {
         float distance = rb.position.y - activePosY;
 
-        float speed = speedAnimCurve.Evaluate((distance / buttonHeight) - 1) * topSpeed;
-        speed = Mathf.Max(speed, 0.1f);
+        float speed = speedAnimCurve.Evaluate((distance / buttonHeight)) * topSpeed;
+        speed = Mathf.Max(speed, 1);
         int dir = 0;
+
+        bool weighedDown = false;
 
         foreach (var obj in ceilingObjs)
         {
@@ -48,7 +52,7 @@ public class HeavyButton : Button
 
             if (pushableObj != null && pushableObj.weight >= weightActivation)
             {
-                pressedDown = true;
+                weighedDown = true;
 
                 if (distance > 0)
                 {
@@ -61,15 +65,22 @@ public class HeavyButton : Button
 
         ceilingObjs.Clear();
 
-        if(distance < buttonHeight && !pressedDown)
+        if(distance < buttonHeight && !weighedDown)
         {
             dir = 1;
+            speed = topSpeed;
         }
 
         rb.linearVelocityY = speed * dir;
 
         float clampedYPos = Mathf.Clamp(rb.position.y, activePosY, inactivePosY);
         rb.position = new Vector2(rb.position.x, clampedYPos);
+
+        if (weighedDown && distance == 0)
+        {
+            pressedDown = true;
+        }
+        springTransform.localScale = new Vector3(1, distance / buttonHeight, 1);
 
         base.FixedUpdate();
     }
