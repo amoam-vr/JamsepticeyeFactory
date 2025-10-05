@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class SpiritSeal : MonoBehaviour
 {
+    // Author: Gustavo
+    // Marks the location of a spirit seal to reset the level if a toy dies too close to it
+
     public float SealingRadius = 5;
     public Transform radiusVisualizer;
 

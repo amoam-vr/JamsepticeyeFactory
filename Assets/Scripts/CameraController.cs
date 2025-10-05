@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    // Author: Gustavo
+    // Controls camera movement
     public float followSpeed;
     public float zDistance;
     private Vector2 currentDistance;
