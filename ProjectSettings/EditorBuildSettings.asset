@@ -6,8 +6,20 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/GustavoTest.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/Scenes/Levels/Tutorial.unity
+    guid: 5cd52e92a57e85a418404c0a3c0a65b1
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level1.unity
+    guid: 3ed0c07b1a65bac4487ca9309ddb4fd5
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level2.unity
+    guid: d5edd1e9730309b46b2f0d0bd2b50547
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level3.unity
+    guid: 4ccd5b89a4f9018489fcdda8d1997227
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level5.unity
+    guid: d0df390489872be42aa403220930640c
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
