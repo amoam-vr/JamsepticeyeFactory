@@ -15,6 +15,8 @@ public class Button : MonoBehaviour
     [SerializeField] Gradient activeLineColor;
     [SerializeField] Gradient inactiveLineColor;
 
+    [SerializeField] Transform buttonMesh;
+
     protected List<LineRenderer> connectingLines = new List<LineRenderer>();
 
     protected virtual void Start()
@@ -72,6 +74,8 @@ public class Button : MonoBehaviour
                 activeGimmicks = false;
             }
         }
+
+        buttonMesh.transform.localPosition = pressedDown ? new Vector3(0, 14, 0) : new Vector3(0, 19, 0);
 
         pressedDown = false;
     }
