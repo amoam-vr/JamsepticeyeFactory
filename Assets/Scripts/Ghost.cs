@@ -24,6 +24,8 @@ public class Ghost : MonoBehaviour
 
         targetToy = null;
         ghostSprite.enabled = false;
+
+        Time.timeScale = 1;
     }
 
     private void OnEnable()
@@ -83,7 +85,6 @@ public class Ghost : MonoBehaviour
 
     public void TrueDeath()
     {
-        Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
