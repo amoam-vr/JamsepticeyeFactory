@@ -50,6 +50,8 @@ public class DynamicObject : MonoBehaviour
         bool staticGround = false;
         foreach (var obj in groundObjs)
         {
+            if (obj == null) break;
+
             if (obj.GetComponent<DynamicObject>() == null)
             {
                 staticGround = true;
@@ -59,6 +61,8 @@ public class DynamicObject : MonoBehaviour
         bool staticCeil = false;
         foreach (var obj in ceilingObjs)
         {
+            if (obj == null) break;
+
             if (obj.GetComponent<DynamicObject>() == null)
             {
                 staticCeil = true;
@@ -68,6 +72,8 @@ public class DynamicObject : MonoBehaviour
         bool staticRightWall = false;
         foreach (var obj in rightWallObjs)
         {
+            if (obj == null) break;
+
             if (obj.GetComponent<DynamicObject>() == null)
             {
                 staticRightWall = true;
@@ -77,6 +83,8 @@ public class DynamicObject : MonoBehaviour
         bool staticLeftWall = false;
         foreach (var obj in leftWallObjs)
         {
+            if (obj == null) break;
+
             if (obj.GetComponent<DynamicObject>() == null)
             {
                 staticLeftWall = true;
@@ -134,7 +142,6 @@ public class DynamicObject : MonoBehaviour
         {
             rb.constraints = RigidbodyConstraints2D.FreezeAll;
         }
-
 
         if (rb.linearVelocity != Vector2.zero && rb.constraints != RigidbodyConstraints2D.FreezeRotation)
         {
