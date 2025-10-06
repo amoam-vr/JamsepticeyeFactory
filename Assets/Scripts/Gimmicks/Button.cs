@@ -75,7 +75,10 @@ public class Button : MonoBehaviour
             }
         }
 
-        buttonMesh.transform.localPosition = pressedDown ? new Vector3(0, 14, 0) : new Vector3(0, 19, 0);
+        if (buttonMesh != null)
+        {
+            buttonMesh.transform.localPosition = pressedDown ? new Vector3(0, 14, 0) : new Vector3(0, 19, 0);
+        }
 
         pressedDown = false;
     }
