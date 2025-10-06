@@ -17,7 +17,7 @@ public class ExitDoor : MonoBehaviour
             if (Toy.possessedToy == contacter)
             {
                 currentLevel++;
-                SceneManager.LoadScene("Level" + currentLevel);
+                SceneManager.LoadScene(currentLevel);
             }
         }
     }
