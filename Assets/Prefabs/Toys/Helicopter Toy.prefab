@@ -277,7 +277,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81a3d3a47b0a0f449a4c7ce1f32d41d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weight: 1
+  weight: 2
   referenceFrame: {x: 0, y: 0}
   acceleration: 30
   fallGravity: -70

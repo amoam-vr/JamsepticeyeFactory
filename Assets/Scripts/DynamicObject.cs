@@ -130,6 +130,17 @@ public class DynamicObject : MonoBehaviour
 
         referenceFrame = Vector2.zero;
 
+        if (rb.linearVelocity == Vector2.zero && rb.constraints != RigidbodyConstraints2D.FreezeAll)
+        {
+            rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        }
+
+
+        if (rb.linearVelocity != Vector2.zero && rb.constraints != RigidbodyConstraints2D.FreezeRotation)
+        {
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        }
+
         leftWallObjs.Clear();
         rightWallObjs.Clear();
         ceilingObjs.Clear();

@@ -47,13 +47,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 309bc39bcd781314da588fe6e2917387, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weight: 1
+  weight: 2
   referenceFrame: {x: 0, y: 0}
   acceleration: 25
   fallGravity: -70
   fallSpeed: -20
   pushable: 1
   startingToy: 0
+  isDead: 0
+  animator: {fileID: 0}
+  character: {fileID: 0}
+  walkAnimMult: 1
   jumpPermisiveness: 0
   walkSpeed: 20
   jumpGravity: -30
