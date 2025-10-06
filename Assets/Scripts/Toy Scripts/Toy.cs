@@ -71,6 +71,7 @@ public class Toy : DynamicObject
         if (Input.GetKeyDown(KeyCode.Space))
         {
             jumpPermisivenessTimer = jumpPermisiveness;
+            animator.SetTrigger("Jump");
         }
 
         if (animator != null)
@@ -118,6 +119,10 @@ public class Toy : DynamicObject
             }
 
             dropPos = rb.position.y;
+        }
+        else
+        {
+            animator.SetTrigger("Land");
         }
 
         base.ColUpdate();
@@ -194,6 +199,8 @@ public class Toy : DynamicObject
         if (isDead) return;
 
         isDead = true;
+
+        animator.SetTrigger("Die");
 
         canPush = false;
 
