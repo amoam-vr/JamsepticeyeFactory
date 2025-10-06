@@ -1,6 +1,7 @@
-using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class DynamicObject : MonoBehaviour
 {
@@ -47,151 +48,176 @@ public class DynamicObject : MonoBehaviour
 
     void CrushCheck()
     {
-        bool staticGround = false;
-        foreach (var obj in groundObjs)
+        try
         {
-            if (obj == null) break;
-
-            if (obj.GetComponent<DynamicObject>() == null)
+            bool staticGround = false;
+            foreach (var obj in groundObjs)
             {
-                staticGround = true;
+                if (obj == null) break;
+
+                if (obj.GetComponent<DynamicObject>() == null)
+                {
+                    staticGround = true;
+                }
+            }
+
+            bool staticCeil = false;
+            foreach (var obj in ceilingObjs)
+            {
+                if (obj == null) break;
+
+                if (obj.GetComponent<DynamicObject>() == null)
+                {
+                    staticCeil = true;
+                }
+            }
+
+            bool staticRightWall = false;
+            foreach (var obj in rightWallObjs)
+            {
+                if (obj == null) break;
+
+                if (obj.GetComponent<DynamicObject>() == null)
+                {
+                    staticRightWall = true;
+                }
+            }
+
+            bool staticLeftWall = false;
+            foreach (var obj in leftWallObjs)
+            {
+                if (obj == null) break;
+
+                if (obj.GetComponent<DynamicObject>() == null)
+                {
+                    staticLeftWall = true;
+                }
+            }
+
+            if ((staticGround && staticCeil) || (staticRightWall && staticLeftWall))
+            {
+                Destroy(gameObject);
             }
         }
-
-        bool staticCeil = false;
-        foreach (var obj in ceilingObjs)
+        catch (Exception e)
         {
-            if (obj == null) break;
 
-            if (obj.GetComponent<DynamicObject>() == null)
-            {
-                staticCeil = true;
-            }
-        }
-
-        bool staticRightWall = false;
-        foreach (var obj in rightWallObjs)
-        {
-            if (obj == null) break;
-
-            if (obj.GetComponent<DynamicObject>() == null)
-            {
-                staticRightWall = true;
-            }
-        }
-
-        bool staticLeftWall = false;
-        foreach (var obj in leftWallObjs)
-        {
-            if (obj == null) break;
-
-            if (obj.GetComponent<DynamicObject>() == null)
-            {
-                staticLeftWall = true;
-            }
-        }
-
-        if ((staticGround && staticCeil) || (staticRightWall && staticLeftWall))
-        {
-            Destroy(gameObject);
         }
     }
 
     protected virtual void ColUpdate()
     {
-        pushable = !(leftWallObjs.Count > 0 && rightWallObjs.Count > 0);
-
-        //Move other objects on top of this object
-        foreach (var obj in ceilingObjs)
+        try
         {
-            DynamicObject pushableObj = obj.GetComponent<DynamicObject>();
+            pushable = !(leftWallObjs.Count > 0 && rightWallObjs.Count > 0);
 
-            if (pushableObj != null && pushableObj.pushable)
+            //Move other objects on top of this object
+            foreach (var obj in ceilingObjs)
             {
-                pushableObj.referenceFrame += rb.linearVelocity;
+                if (obj)
+                {
+                    DynamicObject pushableObj = obj.GetComponent<DynamicObject>();
+                    if (pushableObj != null && pushableObj.pushable)
+                    {
+                        pushableObj.referenceFrame += rb.linearVelocity;
+                    }
+
+                }
+
             }
+
+            CrushCheck();
+
+            if (groundObjs.Count > 0)
+            {
+                vel.y = Mathf.Max(vel.y, 0);
+            }
+
+            if (ceilingObjs.Count > 0)
+            {
+                vel.y = Mathf.Min(vel.y, 0);
+            }
+
+            if (rightWallObjs.Count > 0)
+            {
+                vel.x = Mathf.Min(vel.x, 0);
+            }
+
+            if (leftWallObjs.Count > 0)
+            {
+                vel.x = Mathf.Max(vel.x, 0);
+            }
+
+            rb.linearVelocity = vel + referenceFrame;
+
+            referenceFrame = Vector2.zero;
+
+            if (rb.linearVelocity == Vector2.zero && rb.constraints != RigidbodyConstraints2D.FreezeAll)
+            {
+                rb.constraints = RigidbodyConstraints2D.FreezeAll;
+            }
+
+            if (rb.linearVelocity != Vector2.zero && rb.constraints != RigidbodyConstraints2D.FreezeRotation)
+            {
+                rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            }
+
+            leftWallObjs.Clear();
+            rightWallObjs.Clear();
+            ceilingObjs.Clear();
+            groundObjs.Clear();
         }
-
-        CrushCheck();
-
-        if (groundObjs.Count > 0)
+        catch (Exception e)
         {
-            vel.y = Mathf.Max(vel.y, 0);
+
         }
-
-        if (ceilingObjs.Count > 0)
-        {
-            vel.y = Mathf.Min(vel.y, 0);
-        }
-
-        if (rightWallObjs.Count > 0)
-        {
-            vel.x = Mathf.Min(vel.x, 0);
-        }
-
-        if (leftWallObjs.Count > 0)
-        {
-            vel.x = Mathf.Max(vel.x, 0);
-        }
-
-        rb.linearVelocity = vel + referenceFrame;
-
-        referenceFrame = Vector2.zero;
-
-        if (rb.linearVelocity == Vector2.zero && rb.constraints != RigidbodyConstraints2D.FreezeAll)
-        {
-            rb.constraints = RigidbodyConstraints2D.FreezeAll;
-        }
-
-        if (rb.linearVelocity != Vector2.zero && rb.constraints != RigidbodyConstraints2D.FreezeRotation)
-        {
-            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-        }
-
-        leftWallObjs.Clear();
-        rightWallObjs.Clear();
-        ceilingObjs.Clear();
-        groundObjs.Clear();
     }
 
     protected virtual void OnCollisionStay2D(Collision2D collision)
     {
-        GameObject obj = collision.gameObject;
-        for (int i = 0; i < collision.contactCount; i++)
+        try
         {
-            Vector2 contactNormal = collision.GetContact(i).normal;
-
-            if (contactNormal.x >= 0.9)
+            GameObject obj = collision.gameObject;
+            for (int i = 0; i < collision.contactCount; i++)
             {
-                if (!leftWallObjs.Contains(obj))
+                Vector2 contactNormal = collision.GetContact(i).normal;
+
+                if (contactNormal.x >= 0.9)
                 {
-                    leftWallObjs.Add(obj);
+                    if (!leftWallObjs.Contains(obj))
+                    {
+                        leftWallObjs.Add(obj);
+                    }
+                }
+
+                if (contactNormal.x <= -0.9)
+                {
+                    if (!rightWallObjs.Contains(obj))
+                    {
+                        rightWallObjs.Add(obj);
+                    }
+                }
+
+                if (contactNormal.y >= 0.9)
+                {
+                    if (!groundObjs.Contains(obj))
+                    {
+                        groundObjs.Add(obj);
+                    }
+                }
+
+                if (contactNormal.y <= -0.9)
+                {
+                    if (!ceilingObjs.Contains(obj))
+                    {
+                        ceilingObjs.Add(obj);
+                    }
                 }
             }
+        }
+        catch (Exception e)
+        {
 
-            if (contactNormal.x <= -0.9)
-            {
-                if (!rightWallObjs.Contains(obj))
-                {
-                    rightWallObjs.Add(obj);
-                }
-            }
-
-            if (contactNormal.y >= 0.9)
-            {
-                if (!groundObjs.Contains(obj))
-                {
-                    groundObjs.Add(obj);
-                }
-            }
-
-            if (contactNormal.y <= -0.9)
-            {
-                if (!ceilingObjs.Contains(obj))
-                {
-                    ceilingObjs.Add(obj);
-                }
-            }
         }
     }
 }
