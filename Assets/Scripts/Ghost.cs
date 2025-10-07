@@ -85,6 +85,9 @@ public class Ghost : MonoBehaviour
 
     public void TrueDeath()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        if (!ExitDoor.win)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 }
